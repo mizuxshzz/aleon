@@ -1,280 +1,808 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leon R.</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOID ACCESS</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{
+      --bg:#05000b;
+      --bg2:#090012;
+      --panel:rgba(15,0,30,0.72);
+      --line:rgba(180,70,255,0.18);
+      --neon:#b100ff;
+      --neon2:#e18fff;
+      --text:#ffffff;
+      --sub:#cda8ff;
+      --ok:#b86fff;
+      --warn:#ff6fff;
+    }
 
-<style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-}
+    html,body{
+      width:100%;
+      min-height:100%;
+      overflow-x:hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(140,0,255,0.12), transparent 22%),
+        radial-gradient(circle at 80% 12%, rgba(180,0,255,0.08), transparent 18%),
+        radial-gradient(circle at 50% 55%, rgba(90,0,180,0.06), transparent 30%),
+        linear-gradient(180deg, #030008 0%, #080012 45%, #020005 100%);
+      color:var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      scroll-behavior:smooth;
+    }
 
-body{
-background:#06010f;
-color:white;
-display:flex;
-justify-content:center;
-padding:40px 15px;
-}
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(177,0,255,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(177,0,255,0.045) 1px, transparent 1px);
+      background-size:36px 36px;
+      z-index:-3;
+      pointer-events:none;
+    }
 
-/* grid background */
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at center, rgba(177,0,255,0.06), transparent 55%);
+      z-index:-2;
+      pointer-events:none;
+      animation:bgPulse 7s ease-in-out infinite;
+    }
 
-body::before{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-background-image:
-linear-gradient(rgba(150,0,255,0.08) 1px, transparent 1px),
-linear-gradient(90deg, rgba(150,0,255,0.08) 1px, transparent 1px);
-background-size:50px 50px;
-z-index:-1;
-}
+    @keyframes bgPulse{
+      0%,100%{opacity:.55; transform:scale(1);}
+      50%{opacity:.95; transform:scale(1.04);}
+    }
 
-.container{
-max-width:420px;
-width:100%;
-}
+    /* INTRO */
+    #intro{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      background:
+        radial-gradient(circle at center, rgba(120,0,255,0.12), transparent 30%),
+        linear-gradient(180deg, #020005 0%, #080012 55%, #020005 100%);
+      transition:opacity 1s ease, visibility 1s ease;
+      overflow:hidden;
+    }
 
-/* profile */
+    #intro.hide{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
 
-.profile{
-background:rgba(20,0,40,0.6);
-border-radius:20px;
-padding:30px;
-text-align:center;
-border:1px solid rgba(150,0,255,0.4);
-box-shadow:0 0 20px rgba(160,0,255,0.3);
-margin-bottom:30px;
-}
+    .intro-rings{
+      position:absolute;
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      border:1px solid rgba(177,0,255,0.12);
+      box-shadow:
+        0 0 25px rgba(177,0,255,0.12),
+        inset 0 0 25px rgba(177,0,255,0.05);
+      animation:ringPulse 2.8s ease-in-out infinite;
+    }
 
-.profile img{
-width:110px;
-height:110px;
-border-radius:50%;
-border:4px solid #b100ff;
-box-shadow:0 0 20px #b100ff;
-}
+    .intro-rings::before,
+    .intro-rings::after{
+      content:"";
+      position:absolute;
+      inset:-20px;
+      border-radius:50%;
+      border:1px solid rgba(177,0,255,0.08);
+      animation:ringPulse 3.6s ease-in-out infinite;
+    }
 
-.title{
-font-size:26px;
-margin-top:15px;
-letter-spacing:3px;
-color:#d79cff;
-}
+    .intro-rings::after{
+      inset:-42px;
+      animation-duration:4.6s;
+    }
 
-.subtitle{
-font-size:12px;
-opacity:.7;
-margin-top:5px;
-}
+    @keyframes ringPulse{
+      0%,100%{transform:scale(1); opacity:.45;}
+      50%{transform:scale(1.06); opacity:1;}
+    }
 
-/* section */
+    .intro-title{
+      position:relative;
+      z-index:2;
+      font-size:clamp(32px, 7vw, 56px);
+      font-weight:900;
+      letter-spacing:8px;
+      text-transform:uppercase;
+      color:#fff;
+      text-shadow:
+        0 0 10px rgba(177,0,255,0.65),
+        0 0 24px rgba(177,0,255,0.45),
+        0 0 50px rgba(177,0,255,0.2);
+      animation:introPop 1.4s ease forwards;
+      text-align:center;
+      padding:0 20px;
+    }
 
-.section{
-margin-top:30px;
-}
+    .intro-sub{
+      position:relative;
+      z-index:2;
+      margin-top:10px;
+      font-size:11px;
+      letter-spacing:4px;
+      text-transform:uppercase;
+      color:var(--sub);
+      opacity:0;
+      animation:fadeUp 1s ease forwards;
+      animation-delay:.45s;
+      text-align:center;
+      padding:0 20px;
+    }
 
-.section-title{
-display:flex;
-align-items:center;
-font-size:13px;
-letter-spacing:2px;
-color:#c27cff;
-margin-bottom:15px;
-}
+    .intro-bar{
+      position:relative;
+      z-index:2;
+      margin-top:24px;
+      width:min(220px, 70vw);
+      height:4px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.06);
+      overflow:hidden;
+      box-shadow:0 0 14px rgba(177,0,255,0.2);
+    }
 
-.section-title::after{
-content:"";
-flex:1;
-height:1px;
-background:#7d2cff;
-margin-left:10px;
-opacity:.5;
-}
+    .intro-fill{
+      width:0%;
+      height:100%;
+      background:linear-gradient(90deg, #6f23ff, #e18fff, #6f23ff);
+      box-shadow:0 0 18px rgba(177,0,255,0.65);
+      animation:loadBar 2.5s ease forwards;
+    }
 
-/* link button */
+    @keyframes loadBar{
+      from{width:0%;}
+      to{width:100%;}
+    }
 
-.link{
-display:flex;
-align-items:center;
-justify-content:space-between;
-background:rgba(30,0,60,0.6);
-border:1px solid rgba(160,0,255,0.3);
-border-radius:14px;
-padding:16px;
-margin-bottom:12px;
-text-decoration:none;
-color:white;
-transition:.3s;
-}
+    @keyframes introPop{
+      0%{opacity:0; transform:scale(.8); filter:blur(10px);}
+      100%{opacity:1; transform:scale(1); filter:blur(0);}
+    }
 
-.link:hover{
-transform:scale(1.02);
-box-shadow:0 0 10px #a200ff;
-}
+    @keyframes fadeUp{
+      0%{opacity:0; transform:translateY(10px);}
+      100%{opacity:1; transform:translateY(0);}
+    }
 
-/* icon */
+    /* PAGE */
+    .page{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      padding:20px 14px 100px;
+      opacity:0;
+      transform:translateY(18px);
+      animation:pageIn 1s ease forwards;
+      animation-delay:2.3s;
+    }
 
-.icon{
-font-size:20px;
-margin-right:12px;
-color:#c27cff;
-}
+    @keyframes pageIn{
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
 
-.link-left{
-display:flex;
-align-items:center;
-}
+    .wrap{
+      width:100%;
+      max-width:430px;
+    }
 
-.link-title{
-font-size:14px;
-}
+    /* TOP STATUS */
+    .topbar{
+      position:sticky;
+      top:10px;
+      z-index:20;
+      margin-bottom:14px;
+      backdrop-filter: blur(10px);
+    }
 
-.link-desc{
-font-size:11px;
-opacity:.7;
-}
+    .status{
+      background:rgba(14,0,28,0.74);
+      border:1px solid rgba(177,0,255,0.18);
+      border-radius:18px;
+      padding:12px 14px;
+      box-shadow:
+        0 0 18px rgba(177,0,255,0.08),
+        inset 0 0 10px rgba(177,0,255,0.03);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
 
-/* tag */
+    .status-left{
+      min-width:0;
+    }
 
-.tag{
-font-size:9px;
-padding:3px 8px;
-border-radius:10px;
-background:#7a2bff;
-margin-left:6px;
-}
+    .status-label{
+      font-size:10px;
+      color:var(--sub);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      opacity:.85;
+    }
 
-.arrow{
-color:#c27cff;
-font-size:18px;
-}
+    .status-value{
+      margin-top:4px;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:1px;
+      color:#fff;
+      text-shadow:0 0 10px rgba(177,0,255,0.18);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
 
-</style>
+    .pill{
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      color:#fff;
+      background:linear-gradient(90deg, rgba(111,35,255,.9), rgba(177,0,255,.9));
+      box-shadow:0 0 14px rgba(177,0,255,0.22);
+      flex-shrink:0;
+    }
+
+    /* TERMINAL CARD */
+    .card{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(18,0,35,0.74), rgba(8,0,18,0.84));
+      border:1px solid rgba(177,0,255,0.18);
+      border-radius:24px;
+      padding:18px;
+      margin-bottom:14px;
+      box-shadow:
+        0 0 20px rgba(177,0,255,0.1),
+        inset 0 0 14px rgba(177,0,255,0.03);
+      backdrop-filter:blur(10px);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.04) 30%, transparent 60%);
+      transform:translateX(-120%);
+      animation:shine 5s linear infinite;
+      pointer-events:none;
+    }
+
+    @keyframes shine{
+      100%{transform:translateX(140%);}
+    }
+
+    .terminal-head{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:14px;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.15);
+      box-shadow:0 0 10px rgba(177,0,255,0.2);
+    }
+
+    .dot.active{
+      background:#d27dff;
+      box-shadow:0 0 12px rgba(177,0,255,0.5);
+    }
+
+    .terminal-title{
+      margin-left:6px;
+      font-size:12px;
+      letter-spacing:2px;
+      color:var(--sub);
+      text-transform:uppercase;
+    }
+
+    .terminal{
+      min-height:200px;
+      background:rgba(7,0,14,0.55);
+      border:1px solid rgba(177,0,255,0.08);
+      border-radius:18px;
+      padding:14px;
+      font-size:13px;
+      line-height:1.65;
+      box-shadow: inset 0 0 12px rgba(177,0,255,0.03);
+    }
+
+    .line{
+      margin-bottom:4px;
+      word-break:break-word;
+    }
+
+    .muted{ color:#b98fff; opacity:.9; }
+    .ok{ color:#e8c7ff; }
+    .warn{ color:#ffb8ff; }
+
+    .cursor{
+      display:inline-block;
+      width:8px;
+      height:14px;
+      background:#d67dff;
+      margin-left:6px;
+      vertical-align:middle;
+      box-shadow:0 0 10px rgba(177,0,255,0.45);
+      animation:blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink{
+      50%{opacity:0;}
+    }
+
+    /* BUTTON GRID */
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      color:#d69bff;
+      margin:16px 4px 12px;
+    }
+
+    .section-title::after{
+      content:"";
+      flex:1;
+      height:1px;
+      background:linear-gradient(90deg, rgba(177,0,255,0.4), rgba(177,0,255,0.04));
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+
+    .action{
+      position:relative;
+      overflow:hidden;
+      border:none;
+      outline:none;
+      width:100%;
+      text-align:left;
+      cursor:pointer;
+      border-radius:20px;
+      padding:16px;
+      background:linear-gradient(180deg, rgba(28,0,58,0.72), rgba(12,0,26,0.82));
+      border:1px solid rgba(177,0,255,0.16);
+      color:#fff;
+      box-shadow:
+        0 0 16px rgba(177,0,255,0.08),
+        inset 0 0 10px rgba(177,0,255,0.03);
+      transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+
+    .action::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.05) 35%, transparent 65%);
+      transform:translateX(-120%);
+      transition:transform .7s ease;
+      pointer-events:none;
+    }
+
+    .action:hover::before{
+      transform:translateX(140%);
+    }
+
+    .action:hover{
+      transform:translateY(-2px) scale(1.01);
+      border-color:rgba(225,143,255,0.3);
+      box-shadow:
+        0 0 22px rgba(177,0,255,0.14),
+        0 0 34px rgba(177,0,255,0.05);
+    }
+
+    .action:active{
+      transform:scale(.985);
+    }
+
+    .action-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .action-title{
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .badge{
+      font-size:9px;
+      padding:4px 8px;
+      border-radius:999px;
+      background:linear-gradient(90deg, #6f23ff, #b100ff);
+      letter-spacing:1px;
+      text-transform:uppercase;
+      box-shadow:0 0 12px rgba(177,0,255,0.18);
+      flex-shrink:0;
+    }
+
+    .action-desc{
+      margin-top:6px;
+      font-size:11px;
+      color:#d8c1ff;
+      opacity:.8;
+      line-height:1.45;
+    }
+
+    /* HIDDEN PANEL */
+    .hidden-panel{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .55s ease, margin-top .55s ease;
+      margin-top:0;
+    }
+
+    .hidden-panel.open{
+      max-height:500px;
+      margin-top:12px;
+    }
+
+    .hidden-box{
+      background:rgba(7,0,14,0.55);
+      border:1px solid rgba(177,0,255,0.08);
+      border-radius:18px;
+      padding:14px;
+      font-size:12px;
+      color:#e5cfff;
+      line-height:1.7;
+      box-shadow: inset 0 0 12px rgba(177,0,255,0.03);
+    }
+
+    .quote{
+      font-size:13px;
+      color:#fff;
+      text-shadow:0 0 10px rgba(177,0,255,0.12);
+    }
+
+    /* FOOTER / OUTRO */
+    .outro{
+      margin-top:18px;
+      text-align:center;
+      padding:18px 10px 4px;
+    }
+
+    .outro-line{
+      width:100%;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(177,0,255,0.35), transparent);
+      margin-bottom:14px;
+    }
+
+    .outro-title{
+      font-size:11px;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      color:#d4a1ff;
+    }
+
+    .outro-sub{
+      margin-top:8px;
+      font-size:11px;
+      color:#b993e4;
+      opacity:.8;
+    }
+
+    /* MUSIC */
+    .music-btn{
+      position:fixed;
+      right:14px;
+      bottom:16px;
+      z-index:1000;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      background:rgba(18,0,35,0.84);
+      color:#fff;
+      border:1px solid rgba(177,0,255,0.22);
+      border-radius:16px;
+      padding:12px 14px;
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      box-shadow:
+        0 0 18px rgba(177,0,255,0.12),
+        inset 0 0 10px rgba(177,0,255,0.03);
+      backdrop-filter:blur(10px);
+      transition:.2s ease;
+    }
+
+    .music-btn:active{
+      transform:scale(.96);
+    }
+
+    .music-icon{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#d67dff;
+      box-shadow:0 0 12px rgba(177,0,255,0.5);
+    }
+
+    .tap-note{
+      position:fixed;
+      left:50%;
+      bottom:72px;
+      transform:translateX(-50%);
+      z-index:1000;
+      background:rgba(18,0,35,0.86);
+      color:#fff;
+      border:1px solid rgba(177,0,255,0.18);
+      border-radius:14px;
+      padding:10px 14px;
+      font-size:12px;
+      white-space:nowrap;
+      opacity:0;
+      pointer-events:none;
+      transition:.35s ease;
+      box-shadow:0 0 16px rgba(177,0,255,0.12);
+    }
+
+    .tap-note.show{
+      opacity:1;
+    }
+
+    /* GLITCH */
+    .glitch{
+      position:relative;
+      display:inline-block;
+      text-shadow:
+        0 0 8px rgba(177,0,255,0.25);
+    }
+
+    .glitch::before,
+    .glitch::after{
+      content:attr(data-text);
+      position:absolute;
+      left:0;
+      top:0;
+      width:100%;
+      overflow:hidden;
+      pointer-events:none;
+      opacity:.35;
+    }
+
+    .glitch::before{
+      color:#ff8fff;
+      transform:translate(1px, 0);
+      animation:glitch1 2.2s infinite linear alternate-reverse;
+    }
+
+    .glitch::after{
+      color:#9f7dff;
+      transform:translate(-1px, 0);
+      animation:glitch2 1.8s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch1{
+      0%{clip-path: inset(0 0 85% 0);}
+      20%{clip-path: inset(15% 0 55% 0);}
+      40%{clip-path: inset(40% 0 25% 0);}
+      60%{clip-path: inset(65% 0 10% 0);}
+      80%{clip-path: inset(35% 0 45% 0);}
+      100%{clip-path: inset(80% 0 5% 0);}
+    }
+
+    @keyframes glitch2{
+      0%{clip-path: inset(70% 0 5% 0);}
+      20%{clip-path: inset(30% 0 40% 0);}
+      40%{clip-path: inset(10% 0 70% 0);}
+      60%{clip-path: inset(50% 0 20% 0);}
+      80%{clip-path: inset(25% 0 55% 0);}
+      100%{clip-path: inset(5% 0 80% 0);}
+    }
+
+    @media (max-width:480px){
+      .terminal{ min-height:190px; }
+      .status-value{ font-size:13px; }
+      .action-title{ font-size:13px; }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="container">
+  <!-- INTRO -->
+  <div id="intro">
+    <div class="intro-rings"></div>
+    <div class="intro-title glitch" data-text="VOID ACCESS">VOID ACCESS</div>
+    <div class="intro-sub">Establishing encrypted connection...</div>
+    <div class="intro-bar"><div class="intro-fill"></div></div>
+  </div>
 
-<div class="profile">
+  <!-- AUDIO -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://d4.tfdl.net/public/2026-03-17/43b21628-796c-4443-97da-826fd2446755/The%20One%20That%20Got%20Away%20%20%20Katy%20Perry.m4a" type="audio/mp4">
+  </audio>
 
-<img src="https://j.top4top.io/p_3727yg2me1.jpg">
+  <!-- TAP NOTE -->
+  <div class="tap-note" id="tapNote">Tap layar untuk aktifkan music</div>
 
-<div class="title">Kepada Yth, Leon R.</div>
-<div class="subtitle">ALL SOCIAL MEDIA LEON</div>
+  <!-- MUSIC BUTTON -->
+  <button class="music-btn" id="musicBtn" type="button">
+    <span class="music-icon"></span>
+    <span id="musicText">MUSIC OFF</span>
+  </button>
 
-</div>
+  <!-- PAGE -->
+  <div class="page">
+    <div class="wrap">
 
-<!-- YOUTUBE -->
+      <!-- TOP STATUS -->
+      <div class="topbar">
+        <div class="status">
+          <div class="status-left">
+            <div class="status-label">Network Status</div>
+            <div class="status-value">VIOLET SIGNAL / SECURE CHANNEL</div>
+          </div>
+          <div class="pill">ONLINE</div>
+        </div>
+      </div>
 
-<div class="section">
+      <!-- TERMINAL -->
+      <div class="card">
+        <div class="terminal-head">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <div class="terminal-title">restricted_terminal.exe</div>
+        </div>
 
-<div class="section-title">YOUTUBE AND TIKTOK</div>
+        <div class="terminal" id="terminal">
+          <div class="line muted">&gt; boot sequence initialized...</div>
+          <div class="line muted">&gt; loading encrypted modules...</div>
+          <div class="line muted">&gt; waiting for secure response...</div>
+          <div class="line" id="typedLine"></div>
+        </div>
+      </div>
 
-<a class="link" href="https://www.youtube.com/@nixellon" target="_blank">
+      <!-- ACTIONS -->
+      <div class="section-title">Void Nodes</div>
+      <div class="grid">
 
-<div class="link-left">
-<i class="fab fa-youtube icon"></i>
+        <button class="action" id="scanBtn" type="button">
+          <div class="action-top">
+            <div class="action-title">Signal Scan</div>
+            <div class="badge">Live</div>
+          </div>
+          <div class="action-desc">Run a fake encrypted scan and generate a new system result.</div>
+        </button>
 
-<div>
-<div class="link-title">YOUTUBE CHANNEL <span class="tag">PRIMARY</span></div>
-<div class="link-desc">this is my channel</div>
-</div>
-</div>
+        <button class="action" id="archiveBtn" type="button">
+          <div class="action-top">
+            <div class="action-title">Open Archive</div>
+            <div class="badge">Hidden</div>
+          </div>
+          <div class="action-desc">Reveal classified text from the violet archive.</div>
+        </button>
 
-<div class="arrow">→</div>
+        <button class="action" id="quoteBtn" type="button">
+          <div class="action-top">
+            <div class="action-title">Dark Transmission</div>
+            <div class="badge">Quote</div>
+          </div>
+          <div class="action-desc">Receive a random cryptic message from the void.</div>
+        </button>
 
-</a>
+      </div>
 
+      <!-- HIDDEN PANEL -->
+      <div class="hidden-panel" id="hiddenPanel">
+        <div class="hidden-box" id="hiddenBox">
+          <div class="quote">"Not every signal is meant to be understood."</div>
+        </div>
+      </div>
 
-<a class="link" href="https://www.tiktok.com/@ileon.r" target="_blank">
+      <!-- OUTRO -->
+      <div class="outro">
+        <div class="outro-line"></div>
+        <div class="outro-title">End of Transmission</div>
+        <div class="outro-sub">The signal remains. The void remembers.</div>
+      </div>
 
-<div class="link-left">
-<i class="fab fa-tiktok icon"></i>
+    </div>
+  </div>
 
-<div>
-<div class="link-title">TIKTOK <span class="tag">PRIMARY</span></div>
-<div class="link-desc">Leon's personal TikTok account</div>
-</div>
-</div>
+  <script>
+    const intro = document.getElementById("intro");
+    const bgMusic = document.getElementById("bgMusic");
+    const tapNote = document.getElementById("tapNote");
+    const musicBtn = document.getElementById("musicBtn");
+    const musicText = document.getElementById("musicText");
 
-<div class="arrow">→</div>
+    const terminal = document.getElementById("terminal");
+    const typedLine = document.getElementById("typedLine");
 
-</a>
+    const scanBtn = document.getElementById("scanBtn");
+    const archiveBtn = document.getElementById("archiveBtn");
+    const quoteBtn = document.getElementById("quoteBtn");
 
-</div>
+    const hiddenPanel = document.getElementById("hiddenPanel");
+    const hiddenBox = document.getElementById("hiddenBox");
 
-<!-- WHATSAPP -->
+    let musicStarted = false;
 
-<div class="section">
+    // safer volume
+    bgMusic.volume = 0.33;
 
-<div class="section-title">WHATSAPP</div>
+    // intro hide (anti blank)
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        intro.classList.add("hide");
+      }, 2800);
 
-<a class="link" href="https://wa.me/6285880712388" target="_blank">
+      // try autoplay after a moment
+      setTimeout(() => {
+        bgMusic.play().then(() => {
+          musicStarted = true;
+          musicText.textContent = "MUSIC ON";
+        }).catch(() => {
+          tapNote.classList.add("show");
+          musicText.textContent = "MUSIC OFF";
+        });
+      }, 1200);
 
-<div class="link-left">
-<i class="fab fa-whatsapp icon"></i>
+      startTyping();
+    });
 
-<div>
-<div class="link-title">WHATSAPP NUMBER <span class="tag">PERSONAL</span></div>
-<div class="link-desc">Send a message if necessary</div>
-</div>
-</div>
+    // tap once fallback for music
+    document.addEventListener("click", () => {
+      if (!musicStarted) {
+        bgMusic.play().then(() => {
+          musicStarted = true;
+          tapNote.classList.remove("show");
+          musicText.textContent = "MUSIC ON";
+        }).catch(() => {});
+      }
+    }, { once:true });
 
-<div class="arrow">→</div>
-
-</a>
-
-</div>
-
-<!-- SOCIAL -->
-
-<div class="section">
-
-<div class="section-title">OTHER SOCIAL MEDIA </div>
-
-<a class="link" href="https://www.instagram.com/nixellv" target="_blank">
-
-<div class="link-left">
-<i class="fab fa-instagram icon"></i>
-
-<div>
-<div class="link-title">INSTAGRAM <span class="tag">VISUAL</span></div>
-<div class="link-desc">Daily content & stories</div>
-</div>
-</div>
-
-<div class="arrow">→</div>
-
-</a>
-
-<a class="link" href="https://t.me/nixellflow" target="_blank">
-
-<div class="link-left">
-<i class="fab fa-telegram icon"></i>
-
-<div>
-<div class="link-title">TELEGRAM <span class="tag">CONTACT</span></div>
-<div class="link-desc">Chat Telegram</div>
-</div>
-</div>
-
-<div class="arrow">→</div>
-
-</a>
-
-</div>
-
-</div>
-
-</body>
-</html>
+    // music toggle
+    musicBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (bgMusic.paused) {
+        bgMusic.play().then(() => {
+          musicStarted = true;
+          tapNote.classList.remove("show");
+          musicText.
