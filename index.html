@@ -3,37 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VOID ACCESS LEON</title>
+  <title>VOID ACCESS</title>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
-
+    *{margin:0;padding:0;box-sizing:border-box;}
     :root{
-      --bg1:#050008;
-      --bg2:#120018;
       --violet:#9a2bff;
       --violet2:#d084ff;
-      --text:#ffffff;
-      --soft:#caa6ff;
-      --glass:rgba(255,255,255,0.05);
-      --border:rgba(255,255,255,0.08);
-      --shadow:0 0 20px rgba(154,43,255,0.35), 0 0 60px rgba(154,43,255,0.15);
+      --bg:#050008;
+      --bg2:#0a0012;
+      --text:#fff;
+      --soft:#d8b9ff;
     }
 
     body{
-      font-family:'Inter', sans-serif;
+      font-family:'Inter',sans-serif;
       background:
-        radial-gradient(circle at 20% 20%, rgba(154,43,255,0.16), transparent 35%),
-        radial-gradient(circle at 80% 30%, rgba(255,0,255,0.07), transparent 35%),
-        radial-gradient(circle at 50% 80%, rgba(80,0,255,0.08), transparent 40%),
-        linear-gradient(180deg, #040006 0%, #07000d 35%, #030005 100%);
+        radial-gradient(circle at 20% 20%, rgba(154,43,255,0.15), transparent 35%),
+        radial-gradient(circle at 80% 30%, rgba(255,0,255,0.06), transparent 35%),
+        linear-gradient(180deg, #040006 0%, #07000d 50%, #030005 100%);
       color:var(--text);
       min-height:100vh;
       overflow:hidden;
@@ -47,45 +37,13 @@
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,0.02) 0px,
-          rgba(255,255,255,0.02) 1px,
+          rgba(255,255,255,0.015) 0px,
+          rgba(255,255,255,0.015) 1px,
           transparent 2px,
           transparent 4px
         );
       pointer-events:none;
-      opacity:0.25;
       z-index:0;
-    }
-
-    .particles{
-      position:fixed;
-      inset:0;
-      overflow:hidden;
-      z-index:0;
-      pointer-events:none;
-    }
-
-    .particle{
-      position:absolute;
-      width:2px;
-      height:2px;
-      background:rgba(210,150,255,0.9);
-      border-radius:50%;
-      box-shadow:0 0 10px rgba(154,43,255,0.9);
-      animation:floatUp linear infinite;
-    }
-
-    @keyframes floatUp{
-      0%{
-        transform:translateY(0) scale(0.8);
-        opacity:0;
-      }
-      10%{opacity:1;}
-      90%{opacity:0.8;}
-      100%{
-        transform:translateY(-120vh) scale(1.2);
-        opacity:0;
-      }
     }
 
     .screen{
@@ -95,11 +53,11 @@
       align-items:center;
       justify-content:center;
       padding:20px;
+      transition:opacity .6s ease, visibility .6s ease;
       z-index:5;
-      transition:opacity .9s ease, visibility .9s ease;
     }
 
-    .hidden{
+    .hide{
       opacity:0;
       visibility:hidden;
       pointer-events:none;
@@ -107,106 +65,87 @@
 
     /* INTRO */
     #intro{
-      background:
-        radial-gradient(circle at center, rgba(154,43,255,0.08), transparent 45%),
-        linear-gradient(180deg, rgba(5,0,8,0.95), rgba(2,0,4,0.98));
       flex-direction:column;
       text-align:center;
+      background:
+        radial-gradient(circle at center, rgba(154,43,255,0.08), transparent 45%),
+        linear-gradient(180deg, rgba(5,0,8,0.96), rgba(2,0,4,0.98));
     }
 
-    .intro-ring{
+    .ring{
       position:absolute;
-      width:340px;
-      height:340px;
+      width:300px;
+      height:300px;
       border:1px solid rgba(154,43,255,0.12);
       border-radius:50%;
-      animation:pulseRing 4s ease-in-out infinite;
-      filter:drop-shadow(0 0 25px rgba(154,43,255,0.15));
+      animation:pulse 3s ease-in-out infinite;
     }
 
-    .intro-ring::before,
-    .intro-ring::after{
+    .ring::before,.ring::after{
       content:"";
       position:absolute;
-      inset:20px;
       border:1px solid rgba(154,43,255,0.08);
       border-radius:50%;
+      inset:20px;
     }
 
-    .intro-ring::after{
-      inset:45px;
-    }
+    .ring::after{inset:45px;}
 
-    @keyframes pulseRing{
-      0%,100%{transform:scale(1); opacity:.6;}
-      50%{transform:scale(1.04); opacity:1;}
+    @keyframes pulse{
+      0%,100%{transform:scale(1);opacity:.6;}
+      50%{transform:scale(1.04);opacity:1;}
     }
 
     .intro-box{
       position:relative;
       z-index:2;
-      width:min(92vw, 500px);
-      padding:30px 20px;
+      width:min(92vw,460px);
     }
 
     .logo{
-      font-family:'Orbitron', sans-serif;
-      font-size:clamp(34px, 8vw, 62px);
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(34px,8vw,58px);
       font-weight:900;
-      letter-spacing:8px;
-      text-transform:uppercase;
-      color:#fff;
-      text-shadow:
-        0 0 10px rgba(255,255,255,0.4),
-        0 0 20px rgba(154,43,255,0.55),
-        0 0 40px rgba(154,43,255,0.35);
-      animation:flicker 2.8s infinite;
-    }
-
-    @keyframes flicker{
-      0%, 19%, 21%, 23%, 80%, 100% { opacity:1; }
-      20%, 22% { opacity:0.8; }
-      81% { opacity:0.92; }
-    }
-
-    .intro-sub{
-      margin-top:16px;
-      font-family:'Orbitron', sans-serif;
-      font-size:clamp(12px, 3vw, 17px);
       letter-spacing:6px;
-      color:var(--soft);
-      opacity:.92;
-      min-height:42px;
-      line-height:1.4;
       text-transform:uppercase;
+      text-shadow:
+        0 0 10px rgba(255,255,255,0.35),
+        0 0 22px rgba(154,43,255,0.45);
     }
 
-    .progress-wrap{
-      margin-top:28px;
+    .sub{
+      margin-top:14px;
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(11px,3vw,16px);
+      letter-spacing:4px;
+      color:var(--soft);
+      text-transform:uppercase;
+      line-height:1.5;
+    }
+
+    .bar-wrap{
+      margin-top:24px;
       width:100%;
       height:10px;
+      border-radius:999px;
       background:rgba(255,255,255,0.06);
-      border-radius:999px;
       overflow:hidden;
-      border:1px solid rgba(255,255,255,0.05);
-      box-shadow:inset 0 0 10px rgba(154,43,255,0.08);
+      border:1px solid rgba(255,255,255,0.04);
     }
 
-    .progress{
-      width:0%;
+    .bar{
       height:100%;
+      width:100%;
       border-radius:999px;
-      background:linear-gradient(90deg, #7a00ff, #c14bff, #f1a7ff);
-      box-shadow:0 0 20px rgba(154,43,255,0.6);
-      transition:width .25s linear;
+      background:linear-gradient(90deg,#6f00ff,#b84dff,#f1a7ff);
+      box-shadow:0 0 18px rgba(154,43,255,0.45);
+      animation:loadbar 2s linear forwards;
+      transform-origin:left;
     }
 
-    .percent{
-      margin-top:12px;
-      font-family:'Orbitron', sans-serif;
-      font-size:13px;
-      letter-spacing:4px;
-      color:#d8b9ff;
+    @keyframes loadbar{
+      from{transform:scaleX(0);}
+      to{transform:scaleX(1);}
     }
 
     /* MAIN */
@@ -214,7 +153,6 @@
       opacity:0;
       visibility:hidden;
       pointer-events:none;
-      transition:opacity 1s ease, visibility 1s ease;
       z-index:4;
     }
 
@@ -224,222 +162,180 @@
       pointer-events:auto;
     }
 
-    .main-wrap{
-      position:relative;
-      z-index:2;
-      width:min(92vw, 520px);
+    .wrap{
+      width:min(92vw,520px);
       max-height:92vh;
       overflow:auto;
-      padding:18px 0 30px;
+      padding:10px 0 24px;
+      position:relative;
+      z-index:2;
     }
 
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
       border:1px solid rgba(255,255,255,0.08);
       border-radius:28px;
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      box-shadow:
-        0 10px 40px rgba(0,0,0,0.55),
-        0 0 30px rgba(154,43,255,0.16);
-      padding:24px 18px 18px;
-      position:relative;
-      overflow:hidden;
+      padding:22px 16px 18px;
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      box-shadow:0 10px 40px rgba(0,0,0,0.5), 0 0 28px rgba(154,43,255,0.12);
     }
 
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 15% 15%, rgba(154,43,255,0.12), transparent 28%),
-        radial-gradient(circle at 85% 25%, rgba(255,255,255,0.03), transparent 25%);
-      pointer-events:none;
-    }
-
-    .topline{
+    .top{
       display:flex;
       justify-content:space-between;
       align-items:center;
       gap:10px;
       margin-bottom:16px;
-      position:relative;
-      z-index:1;
+      flex-wrap:wrap;
     }
 
     .tag{
-      font-family:'Orbitron', sans-serif;
-      font-size:11px;
+      font-family:'Orbitron',sans-serif;
+      font-size:10px;
       letter-spacing:3px;
-      color:#d8b9ff;
-      text-transform:uppercase;
+      color:var(--soft);
       padding:8px 10px;
-      border:1px solid rgba(255,255,255,0.08);
       border-radius:999px;
+      border:1px solid rgba(255,255,255,0.08);
       background:rgba(255,255,255,0.03);
+      text-transform:uppercase;
     }
 
     .status{
       font-size:12px;
-      color:#b7ffca;
+      color:#a8ffc3;
       display:flex;
       align-items:center;
       gap:6px;
     }
 
     .dot{
-      width:8px;
-      height:8px;
-      border-radius:50%;
+      width:8px;height:8px;border-radius:50%;
       background:#72ff9a;
-      box-shadow:0 0 12px rgba(114,255,154,0.8);
+      box-shadow:0 0 10px rgba(114,255,154,.7);
       animation:blink 1.2s infinite;
     }
 
     @keyframes blink{
-      0%,100%{opacity:1}
-      50%{opacity:.35}
+      0%,100%{opacity:1;}
+      50%{opacity:.35;}
     }
 
     .hero{
       text-align:center;
-      padding:8px 6px 10px;
-      position:relative;
-      z-index:1;
+      margin-bottom:18px;
     }
 
     .hero-title{
-      font-family:'Orbitron', sans-serif;
-      font-size:clamp(28px, 7vw, 46px);
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(28px,7vw,42px);
       font-weight:900;
-      letter-spacing:7px;
+      letter-spacing:5px;
       text-transform:uppercase;
-      color:#fff;
-      text-shadow:
-        0 0 10px rgba(255,255,255,0.25),
-        0 0 22px rgba(154,43,255,0.45);
+      text-shadow:0 0 16px rgba(154,43,255,0.35);
     }
 
     .hero-sub{
       margin-top:10px;
-      font-size:13px;
-      color:#d8b9ff;
+      font-size:12px;
+      color:var(--soft);
       letter-spacing:2px;
       text-transform:uppercase;
+      line-height:1.6;
     }
 
     .terminal{
-      margin-top:18px;
-      position:relative;
-      z-index:1;
-      border-radius:20px;
-      padding:16px 14px;
-      background:rgba(0,0,0,0.38);
+      background:rgba(0,0,0,0.35);
       border:1px solid rgba(255,255,255,0.06);
-      box-shadow:inset 0 0 25px rgba(154,43,255,0.05);
+      border-radius:20px;
+      padding:14px;
+      margin-bottom:16px;
     }
 
     .terminal-head{
       display:flex;
+      gap:7px;
+      margin-bottom:10px;
       align-items:center;
-      gap:8px;
-      margin-bottom:12px;
     }
 
     .t-dot{
-      width:10px;
-      height:10px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.16);
+      width:10px;height:10px;border-radius:50%;
+      background:rgba(255,255,255,0.14);
     }
 
     .t-label{
       margin-left:auto;
-      font-size:11px;
+      font-family:'Orbitron',sans-serif;
+      font-size:10px;
       color:#b98dff;
       letter-spacing:2px;
-      font-family:'Orbitron', sans-serif;
     }
 
     .terminal-text{
-      font-family:'Orbitron', sans-serif;
-      font-size:13px;
+      font-family:'Orbitron',sans-serif;
+      font-size:12px;
       line-height:1.8;
-      color:#e9d5ff;
-      min-height:130px;
+      color:#ecdfff;
       white-space:pre-line;
+      min-height:120px;
     }
 
-    .grid{
-      margin-top:18px;
+    .buttons{
       display:grid;
-      grid-template-columns:1fr;
       gap:12px;
-      position:relative;
-      z-index:1;
     }
 
     .btn{
-      border:none;
-      outline:none;
       width:100%;
-      padding:16px 16px;
+      border:none;
       border-radius:18px;
+      padding:15px 14px;
+      cursor:pointer;
       background:linear-gradient(135deg, rgba(154,43,255,0.22), rgba(255,255,255,0.04));
       border:1px solid rgba(255,255,255,0.08);
       color:#fff;
-      font-family:'Orbitron', sans-serif;
-      font-size:13px;
-      letter-spacing:3px;
+      font-family:'Orbitron',sans-serif;
+      font-size:12px;
+      letter-spacing:2px;
       text-transform:uppercase;
-      cursor:pointer;
-      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-      box-shadow:0 8px 24px rgba(0,0,0,0.35);
     }
 
-    .btn:hover,
     .btn:active{
-      transform:translateY(-2px) scale(1.01);
-      border-color:rgba(209,132,255,0.28);
-      box-shadow:0 0 18px rgba(154,43,255,0.28);
+      transform:scale(.99);
     }
 
     .quote{
       margin-top:16px;
       text-align:center;
       font-size:13px;
-      color:#cfaeff;
-      opacity:.9;
+      color:#d4b4ff;
       line-height:1.7;
-      padding:0 8px;
-      position:relative;
-      z-index:1;
     }
 
     .footer{
-      margin-top:18px;
+      margin-top:16px;
       text-align:center;
-      font-family:'Orbitron', sans-serif;
-      font-size:11px;
+      font-family:'Orbitron',sans-serif;
+      font-size:10px;
       letter-spacing:3px;
       color:rgba(216,185,255,0.7);
-      position:relative;
-      z-index:1;
     }
 
     /* MODAL */
     .modal{
       position:fixed;
       inset:0;
-      background:rgba(0,0,0,0.7);
+      background:rgba(0,0,0,0.72);
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:20px;
+      padding:18px;
       z-index:20;
       opacity:0;
       visibility:hidden;
-      transition:opacity .35s ease, visibility .35s ease;
+      transition:.3s ease;
     }
 
     .modal.show{
@@ -448,56 +344,47 @@
     }
 
     .modal-box{
-      width:min(92vw, 480px);
-      border-radius:24px;
-      padding:22px 18px 18px;
-      background:linear-gradient(180deg, rgba(20,0,35,0.96), rgba(8,0,14,0.96));
+      width:min(92vw,460px);
+      border-radius:22px;
+      padding:20px 16px 16px;
+      background:linear-gradient(180deg, rgba(18,0,30,0.97), rgba(7,0,12,0.97));
       border:1px solid rgba(255,255,255,0.08);
-      box-shadow:0 0 30px rgba(154,43,255,0.2);
-      transform:translateY(18px) scale(.98);
-      transition:transform .35s ease;
-    }
-
-    .modal.show .modal-box{
-      transform:translateY(0) scale(1);
+      box-shadow:0 0 28px rgba(154,43,255,0.18);
     }
 
     .modal-title{
-      font-family:'Orbitron', sans-serif;
-      font-size:18px;
-      letter-spacing:4px;
+      font-family:'Orbitron',sans-serif;
+      font-size:17px;
+      letter-spacing:3px;
       text-transform:uppercase;
-      color:#fff;
       margin-bottom:12px;
     }
 
     .modal-content{
       font-size:14px;
       line-height:1.8;
-      color:#e6d6ff;
+      color:#eadcff;
       white-space:pre-line;
     }
 
-    .close-btn{
+    .close{
       margin-top:16px;
       width:100%;
-      padding:14px;
       border:none;
       border-radius:16px;
-      background:linear-gradient(90deg, #6f00ff, #b84dff);
+      padding:14px;
+      background:linear-gradient(90deg,#6f00ff,#b84dff);
       color:#fff;
-      font-family:'Orbitron', sans-serif;
-      letter-spacing:3px;
+      font-family:'Orbitron',sans-serif;
+      letter-spacing:2px;
       text-transform:uppercase;
-      cursor:pointer;
-      box-shadow:0 0 18px rgba(154,43,255,0.35);
     }
 
     /* OUTRO */
     #outro{
       background:
         radial-gradient(circle at center, rgba(154,43,255,0.08), transparent 45%),
-        linear-gradient(180deg, rgba(5,0,8,0.95), rgba(2,0,4,0.98));
+        linear-gradient(180deg, rgba(5,0,8,0.96), rgba(2,0,4,0.98));
       flex-direction:column;
       text-align:center;
       z-index:30;
@@ -513,79 +400,63 @@
     }
 
     .outro-title{
-      font-family:'Orbitron', sans-serif;
-      font-size:clamp(24px, 6vw, 44px);
-      letter-spacing:6px;
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(24px,6vw,42px);
+      letter-spacing:5px;
       text-transform:uppercase;
-      text-shadow:0 0 18px rgba(154,43,255,0.35);
+      text-shadow:0 0 16px rgba(154,43,255,0.35);
     }
 
     .outro-sub{
-      margin-top:14px;
-      font-size:13px;
-      letter-spacing:4px;
-      color:#d8b9ff;
+      margin-top:12px;
+      font-size:12px;
+      letter-spacing:3px;
+      color:var(--soft);
       text-transform:uppercase;
     }
 
     .restart{
-      margin-top:24px;
-      padding:14px 18px;
+      margin-top:20px;
       border:none;
-      border-radius:18px;
-      background:linear-gradient(90deg, #6f00ff, #b84dff);
+      border-radius:16px;
+      padding:14px 18px;
+      background:linear-gradient(90deg,#6f00ff,#b84dff);
       color:#fff;
-      font-family:'Orbitron', sans-serif;
-      letter-spacing:3px;
+      font-family:'Orbitron',sans-serif;
+      letter-spacing:2px;
       text-transform:uppercase;
-      cursor:pointer;
-      box-shadow:0 0 18px rgba(154,43,255,0.35);
     }
 
-    .secret-hitbox{
+    .secret{
       position:fixed;
-      bottom:8px;
       right:8px;
+      bottom:8px;
       width:28px;
       height:28px;
+      opacity:.02;
       z-index:10;
-      opacity:0.02;
-    }
-
-    @media (max-width:480px){
-      .hero-title{letter-spacing:5px;}
-      .logo{letter-spacing:5px;}
-      .intro-sub{letter-spacing:4px;}
-      .terminal-text{font-size:12px;}
-      .btn{font-size:12px; letter-spacing:2px;}
     }
   </style>
 </head>
 <body>
 
-  <!-- Background particles -->
-  <div class="particles" id="particles"></div>
-
   <!-- INTRO -->
   <section class="screen" id="intro">
-    <div class="intro-ring"></div>
+    <div class="ring"></div>
     <div class="intro-box">
       <div class="logo">VOID ACCESS</div>
-      <div class="intro-sub" id="introText">ESTABLISHING ENCRYPTED CONNECTION...</div>
-
-      <div class="progress-wrap">
-        <div class="progress" id="progressBar"></div>
+      <div class="sub">ESTABLISHING ENCRYPTED CONNECTION...</div>
+      <div class="bar-wrap">
+        <div class="bar"></div>
       </div>
-
-      <div class="percent" id="percentText">0%</div>
     </div>
   </section>
 
   <!-- MAIN -->
   <section class="screen" id="main">
-    <div class="main-wrap">
+    <div class="wrap">
       <div class="card">
-        <div class="topline">
+        <div class="top">
           <div class="tag">Restricted Protocol</div>
           <div class="status"><span class="dot"></span> SIGNAL ONLINE</div>
         </div>
@@ -605,7 +476,7 @@
           <div class="terminal-text" id="terminalText"></div>
         </div>
 
-        <div class="grid">
+        <div class="buttons">
           <button class="btn" onclick="openModal('archive')">Open Archive</button>
           <button class="btn" onclick="openModal('signal')">Signal Status</button>
           <button class="btn" onclick="openModal('unknown')">Unknown File</button>
@@ -613,13 +484,8 @@
           <button class="btn" onclick="showOutro()">End Transmission</button>
         </div>
 
-        <div class="quote" id="quoteText">
-          “Some systems are not meant to be understood. Only entered.”
-        </div>
-
-        <div class="footer">
-          NO IDENTITY / NO TRACE / NO SIGNAL LOSS
-        </div>
+        <div class="quote">“Some systems are not meant to be understood. Only entered.”</div>
+        <div class="footer">NO IDENTITY / NO TRACE / NO SIGNAL LOSS</div>
       </div>
     </div>
   </section>
@@ -627,9 +493,9 @@
   <!-- MODAL -->
   <div class="modal" id="modal">
     <div class="modal-box">
-      <div class="modal-title" id="modalTitle">ARCHIVE</div>
+      <div class="modal-title" id="modalTitle">Archive</div>
       <div class="modal-content" id="modalContent"></div>
-      <button class="close-btn" onclick="closeModal()">Close</button>
+      <button class="close" onclick="closeModal()">Close</button>
     </div>
   </div>
 
@@ -640,8 +506,8 @@
     <button class="restart" onclick="restartSystem()">Reopen System</button>
   </section>
 
-  <!-- SECRET BUTTON -->
-  <button class="secret-hitbox" onclick="openModal('secret')"></button>
+  <!-- SECRET -->
+  <button class="secret" onclick="openModal('secret')"></button>
 
   <!-- AUDIO -->
   <audio id="bgMusic" loop>
@@ -649,29 +515,16 @@
   </audio>
 
   <script>
-    const intro = document.getElementById('intro');
-    const main = document.getElementById('main');
-    const outro = document.getElementById('outro');
-    const progressBar = document.getElementById('progressBar');
-    const percentText = document.getElementById('percentText');
-    const introText = document.getElementById('introText');
-    const terminalText = document.getElementById('terminalText');
-    const quoteText = document.getElementById('quoteText');
-    const modal = document.getElementById('modal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
-    const bgMusic = document.getElementById('bgMusic');
-    const particles = document.getElementById('particles');
+    const intro = document.getElementById("intro");
+    const main = document.getElementById("main");
+    const outro = document.getElementById("outro");
+    const terminalText = document.getElementById("terminalText");
+    const modal = document.getElementById("modal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalContent = document.getElementById("modalContent");
+    const bgMusic = document.getElementById("bgMusic");
 
-    const introLines = [
-      "ESTABLISHING ENCRYPTED CONNECTION...",
-      "BYPASSING FIREWALL...",
-      "DECRYPTING SIGNAL...",
-      "VERIFYING UNKNOWN NODE...",
-      "ACCESS GRANTED."
-    ];
-
-    const terminalLines = [
+    const lines = [
       "> INITIALIZING VOID CORE...",
       "> SCANNING SIGNAL PATH...",
       "> AUTHORITY STATUS: UNVERIFIED",
@@ -682,14 +535,7 @@
       "> ACCESS LEVEL V ACCEPTED"
     ];
 
-    const quotes = [
-      "“Some systems are not meant to be understood. Only entered.”",
-      "“Not every signal is sent to be found.”",
-      "“Silence is the loudest encryption.”",
-      "“The void remembers what the world forgets.”"
-    ];
-
-    const modalData = {
+    const data = {
       archive: {
         title: "Archive",
         content: `CLASSIFIED RECORD // V-17
@@ -701,11 +547,7 @@ Signal Age: Untraceable
 Recovered fragments:
 - the signal does not belong to any public channel
 - all identifiers have been erased
-- the remaining trace is intentional
-
-Conclusion:
-This node was never meant to be owned.
-Only accessed.`
+- the remaining trace is intentional`
       },
       signal: {
         title: "Signal Status",
@@ -715,22 +557,15 @@ Connection: Stable
 Encryption Layer: Active
 Identity Exposure: 0%
 Traceback Risk: Minimal
-Observer Count: Undefined
-
-System Note:
-As long as the signal remains unnamed,
-it cannot be fully captured.`
+Observer Count: Undefined`
       },
       unknown: {
         title: "Unknown File",
         content: `FILE: //NULL//VX-09
 
-This file contains no visible author.
+No visible author.
 No origin.
 No destination.
-
-The file opens only for those
-who do not ask who created it.
 
 Message:
 "Remain unreadable."`
@@ -741,10 +576,6 @@ Message:
 
 You found the invisible trigger.
 
-Hidden Note:
-The most powerful presence
-is the one that never explains itself.
-
 Protocol Advice:
 - reveal less
 - look colder
@@ -753,52 +584,72 @@ Protocol Advice:
       }
     };
 
-    // Particles
-    function createParticles() {
-      for (let i = 0; i < 36; i++) {
-        const p = document.createElement('span');
-        p.classList.add('particle');
-        p.style.left = Math.random() * 100 + 'vw';
-        p.style.top = (Math.random() * 100 + 20) + 'vh';
-        p.style.animationDuration = (8 + Math.random() * 10) + 's';
-        p.style.animationDelay = (Math.random() * 8) + 's';
-        p.style.opacity = Math.random() * 0.8;
-        particles.appendChild(p);
-      }
+    // FORCE AUTO OPEN MAIN AFTER 2.2 DETIK
+    setTimeout(() => {
+      intro.classList.add("hide");
+      main.classList.add("show");
+      document.body.style.overflow = "auto";
+      startTyping();
+    }, 2200);
+
+    // FAILSAFE EXTRA (kalau browser ngaco)
+    setTimeout(() => {
+      intro.style.display = "none";
+      main.classList.add("show");
+      document.body.style.overflow = "auto";
+    }, 3200);
+
+    function startTyping(){
+      let i = 0;
+      terminalText.textContent = "";
+      const timer = setInterval(() => {
+        if(i < lines.length){
+          terminalText.textContent += lines[i] + "\n";
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, 180);
     }
-    createParticles();
 
-    // Intro Progress
-    let progress = 0;
-    let introIndex = 0;
+    function openModal(key){
+      modalTitle.textContent = data[key].title;
+      modalContent.textContent = data[key].content;
+      modal.classList.add("show");
+    }
 
-    const introInterval = setInterval(() => {
-      progress += Math.floor(Math.random() * 7) + 3;
+    function closeModal(){
+      modal.classList.remove("show");
+    }
 
-      if (progress > 100) progress = 100;
+    modal.addEventListener("click", function(e){
+      if(e.target === modal) closeModal();
+    });
 
-      progressBar.style.width = progress + "%";
-      percentText.textContent = progress + "%";
+    function playMusic(){
+      bgMusic.play().then(() => {
+        modalTitle.textContent = "Audio Activated";
+        modalContent.textContent = `BACKGROUND AUDIO: ONLINE
 
-      if (progress > 18 && introIndex === 0) {
-        introText.textContent = introLines[1];
-        introIndex++;
-      }
-      if (progress > 38 && introIndex === 1) {
-        introText.textContent = introLines[2];
-        introIndex++;
-      }
-      if (progress > 63 && introIndex === 2) {
-        introText.textContent = introLines[3];
-        introIndex++;
-      }
-      if (progress > 88 && introIndex === 3) {
-        introText.textContent = introLines[4];
-        introIndex++;
-      }
+Playback enabled successfully.`;
+        modal.classList.add("show");
+      }).catch(() => {
+        modalTitle.textContent = "Audio Blocked";
+        modalContent.textContent = `Tap the button again.
 
-      if (progress >= 100) {
-        clearInterval(introInterval);
+Some mobile browsers block audio until manual interaction.`;
+        modal.classList.add("show");
+      });
+    }
 
-        setTimeout(() => {
-          intro.classList.add('
+    function showOutro(){
+      outro.classList.add("show");
+    }
+
+    function restartSystem(){
+      outro.classList.remove("show");
+      closeModal();
+    }
+  </script>
+</body>
+</html>
